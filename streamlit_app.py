@@ -14,10 +14,13 @@ Whether you are expecting a new fluffy friend or just want to compare prices we'
 
 First of all, tell me a little more about your pet
 """
+# This will appear above everything written in the form.
+sound = st.selectbox('Your pet sounds like...', ['meow','woof','squeak','tweet', 'blub', 'pika'])
+st.session_state.text = f"Hi I'll be your purr-sonal assistant for this purchase {sound}"
 
-with st.sidebar:
-    st.image("tile0" + str(random.randint(10, 45)) + ".png")
-    st.write("Hi I'll be your purr-sonal assistant today")
+if 'image' not in st.session_state:
+    st.session_state.image = "tile0" + str(random.randint(10, 45)) + ".png"
+
 
 def plot():
     # Parameters for the normal distribution
@@ -75,9 +78,12 @@ def plot():
 
     fig  # 👈 Draw a Matplotlib chart
 
+def sidebar():
+    with st.sidebar:
+        st.image(st.session_state.image)
+        st.write(st.session_state.text)
 
-# This will appear above everything written in the form.
-sound = st.selectbox('Your pet sounds like...', ['meow','woof','squeak','tweet', 'blub', 'pika'])
+
 
 "Feel free to add some item you want to buy below"
 
@@ -107,6 +113,7 @@ if st.button("Add Item"):
     # Append the item to the list
     st.session_state.form_data.append(item)
     st.session_state.total_price += item_price
+    st.session_state.image = "tile0" + str(random.randint(10, 45)) + ".png"
     with st.sidebar:
         cat_phrases = [
             "Purr-fectly soothing sounds for relaxation.",
@@ -123,22 +130,17 @@ if st.button("Add Item"):
 
         # Select and display a random phrase
         random_phrase = random.choice(cat_phrases)
-        st.write(random_phrase)
+        st.session_state.text = random_phrase
+        sidebar()
         st.write("## Price Total: " + str(st.session_state.total_price))
         plot()
 
 
 st.table(st.session_state.form_data)
 
-# Display the list of items
-if st.session_state.form_data:
-    st.write("Items Added:")
-    for i, item in enumerate(st.session_state.form_data):
-        st.write(f"Item {i + 1}: Name - {item['Item Type']}, Quantity - {item['Quantity']}, Price - {item['Price']}")
-
-# Optionally, you can choose to clear the form data
+# clear the form data
 if st.button("Clear Form"):
     st.session_state.form_data = []
 
-    
-
+if st.session_state.text == f"Hi I'll be your purr-sonal assistant for this purchase {sound}":
+    sidebar()
