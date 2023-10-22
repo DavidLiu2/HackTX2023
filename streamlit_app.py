@@ -14,6 +14,63 @@ Whether you are expecting a new fluffy friend or just want to compare prices we'
 First of all, tell me a little more about your pet
 """
 
+def plot():
+    # Parameters for the normal distribution
+    mean = 0
+    std_dev = 1
+    sample_size = 200
+    desired_percentile = 25
+
+    if item_type == "Food :knife_fork_plate:":
+        mean = 7
+        std_dev = 5
+    elif item_type == "Toy :teddy_bear:":
+        mean = 2
+        std_dev = 10
+    elif item_type == "Enclosure :house:":
+        mean = 100
+        std_dev = 100
+        desired_percentile = 40
+    elif item_type == "Bed :bed:":
+        mean = 20
+        std_dev = 10
+    elif item_type == "Cleaning :soap:":
+        mean = 7
+        std_dev = 3
+    elif item_type == "Fish Tank :fish:":
+        mean = 200
+        std_dev = 100
+        desired_percentile = 10
+    else:
+        return
+
+    # Generate a normal distribution
+    normal_data = np.random.normal(mean, std_dev, sample_size)
+
+    # Calculate the threshold value for the desired percentile
+    threshold = np.percentile(normal_data, desired_percentile)
+
+    if threshold < 0:
+        threshold = 1
+
+    # Filter the data to retain values above the threshold
+    filtered_data = normal_data[normal_data >= threshold]
+
+
+    fig, ax = plt.subplots()
+    ax.hist(filtered_data, bins=20)
+
+    ax.axvline(x=item_price, color='red', linestyle='--', label=f'Item Price: {item_price}')
+    ax.legend()
+
+    # Customize the plot as needed (e.g., labels, titles, etc.)
+    ax.set_xlabel('Price USD')
+    ax.set_ylabel('Frequency')
+    ax.set_title('Your Item Price Compared')
+
+    fig  # 👈 Draw a Matplotlib chart
+
+
 # This will appear above everything written in the form.
 sound = st.selectbox('Your pet sounds like...', ['meow','woof','squeak','tweet', 'blub', 'pika'])
 
@@ -22,13 +79,15 @@ sound = st.selectbox('Your pet sounds like...', ['meow','woof','squeak','tweet',
 # Create an empty list to store form data
 if 'form_data' not in st.session_state:
     st.session_state.form_data = []
+if 'total_price' not in st.session_state:
+    st.session_state.total_price = 0
 
 # Define the form fields
 import streamlit as st
 
 item_type = st.radio(
     "Item Type",
-    ["Food :knife_fork_plate:", "Toy :teddy_bear:", "Enclosure :house:", "Bed :bed:", "Cleaning :soap:", "Fish Tank :fish:"])
+    ["Food :knife_fork_plate:", "Toy :teddy_bear:", "Enclosure :house:", "Bed :bed:", "Cleaning :soap:", "Fish Tank :fish:", "Other :alien:"])
 item_quantity = st.number_input("Quantity", min_value=1)
 item_price = st.number_input("Price", min_value=0.01)
 
@@ -42,6 +101,11 @@ if st.button("Add Item"):
     }
     # Append the item to the list
     st.session_state.form_data.append(item)
+    st.session_state.total_price += item_price
+    with st.sidebar:
+        st.write("## Price Total: " + str(st.session_state.total_price))
+        plot()
+
 
 st.table(st.session_state.form_data)
 
@@ -55,58 +119,5 @@ if st.session_state.form_data:
 if st.button("Clear Form"):
     st.session_state.form_data = []
 
-
-
-# Parameters for the normal distribution
-mean = 0
-std_dev = 1
-sample_size = 200
-desired_percentile = 25
-
-if item_type == "Food :knife_fork_plate:":
-    mean = 10
-    std_dev = 3
-if item_type == "Toy :teddy_bear:":
-    mean = 2
-    std_dev = 10
-if item_type == "Enclosure :house:":
-    mean = 100
-    std_dev = 100
-    desired_percentile = 40
-if item_type == "Bed :bed:":
-    mean = 20
-    std_dev = 10
-if item_type == "Cleaning :soap:":
-    mean = 7
-    std_dev = 3
-if item_type == "Fish Tank :fish:":
-    mean = 200
-    std_dev = 100
-    desired_percentile = 10
-
-# Generate a normal distribution
-normal_data = np.random.normal(mean, std_dev, sample_size)
-
-# Calculate the threshold value for the desired percentile
-threshold = np.percentile(normal_data, desired_percentile)
-
-if threshold < 0:
-    threshold = 1
-
-# Filter the data to retain values above the threshold
-filtered_data = normal_data[normal_data >= threshold]
-
-
-fig, ax = plt.subplots()
-ax.hist(filtered_data, bins=20)
-
-ax.axvline(x=item_price, color='red', linestyle='--', label=f'Item Price: {item_price}')
-ax.legend()
-
-# Customize the plot as needed (e.g., labels, titles, etc.)
-ax.set_xlabel('Price')
-ax.set_ylabel('Frequency')
-ax.set_title('Your Item Price Compared')
-
-fig  # 👈 Draw a Matplotlib chart
+    
 
