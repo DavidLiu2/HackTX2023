@@ -1,4 +1,4 @@
-#About Pet Budget Simulator
+# About Pet Budget Simulator
 ## Inspiration
 Pet Budget Simulator was inspired by Capital One's challenge of Best Financial Hack combined with our love for our pets. David and Aidan are brothers who have an extremely cute cat named Yogurt!
 ## What it does
