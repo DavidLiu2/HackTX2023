@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 """
-# Welcome to Pet Financer!
+# Welcome to Pet Budget Simulator!
 
 Whether you are expecting a new fluffy friend or just want to compare prices we're here to help :)
 
@@ -15,7 +15,7 @@ First of all, tell me a little more about your pet
 """
 
 # This will appear above everything written in the form.
-sound = st.selectbox('Your pet sounds like...', ['meow','woof','squeak','tweet', 'blub'])
+sound = st.selectbox('Your pet sounds like...', ['meow','woof','squeak','tweet', 'blub', 'pika'])
 
 "Feel free to add some item you want to buy below"
 
