@@ -1,4 +1,5 @@
 from collections import namedtuple
+import random
 import altair as alt
 import math
 import pandas as pd
@@ -13,6 +14,10 @@ Whether you are expecting a new fluffy friend or just want to compare prices we'
 
 First of all, tell me a little more about your pet
 """
+
+with st.sidebar:
+    st.image("tile0" + str(random.randint(10, 45)) + ".png")
+    st.write("Hi I'll be your purr-sonal assistant today")
 
 def plot():
     # Parameters for the normal distribution
@@ -103,6 +108,22 @@ if st.button("Add Item"):
     st.session_state.form_data.append(item)
     st.session_state.total_price += item_price
     with st.sidebar:
+        cat_phrases = [
+            "Purr-fectly soothing sounds for relaxation.",
+            "Whisker-twitching tunes for a purr-fect day.",
+            "Meow-sic to your ears!",
+            "Let's turn up the 'purr-sound-ality' in here.",
+            "Cat-chy beats for your feline mood.",
+            "Pawsitively delightful melodies.",
+            "These tunes are the cat's whiskers!",
+            "Purr-suasive sounds that'll whisk you away.",
+            "Purronounceable hits for your playlist.",
+            "A symphony of meow-sical delights."
+        ]
+
+        # Select and display a random phrase
+        random_phrase = random.choice(cat_phrases)
+        st.write(random_phrase)
         st.write("## Price Total: " + str(st.session_state.total_price))
         plot()
 
